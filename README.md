@@ -4,14 +4,19 @@
 <img src="https://github.com/yehengchen/Object-Detection-and-Tracking/blob/master/OneStage/yolo/yolo_img/output_person_315_1120_s.gif" width="40%" height="40%"> <img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/output_car_143.gif" width="40%" height="40%">
 
 __Object Tracking & Counting Demo 
+
+
+## Note
+This work is based on the git of Mr.yehengchen , i just fixed some problemes related to version compatibilities , and edited some line of codes to make it run with the most recent versions of the software i have on my laptop.
+
 ## Requirement
 __Development Environment: 
 
-* OpenCV
-* sklean
-* pillow
-* numpy 
-* tensorflow-gpu 
+* OpenCV 4.2.0
+* sklean 
+* pillow 7.0.0
+* numpy 1.22.2
+* tensorflow-gpu  
 ***
 
 It uses:
