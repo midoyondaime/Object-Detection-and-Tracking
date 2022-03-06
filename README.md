@@ -1,117 +1,68 @@
-<h1 align="center">
-  Object Detection and Tracking
-</h1>
+# YOLOv3 + Deep_SORT
 
-<div align="center">
-  <img src="https://github.com/yehengchen/ObjectDetection/blob/master/img/objectdetection.gif" width="60%" height="60%">
-</div>
+<img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/output.gif" width="40%" height="40%"> <img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/TownCentreXVID_output.gif" width="40%" height="40%">
+<img src="https://github.com/yehengchen/Object-Detection-and-Tracking/blob/master/OneStage/yolo/yolo_img/output_person_315_1120_s.gif" width="40%" height="40%"> <img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/output_car_143.gif" width="40%" height="40%">
 
-*Object detection is a computer technology related to computer vision and image processing that deals with detecting instances of semantic objects of a certain class (such as humans, buildings, or cars) in digital images and videos.*
+__Object Tracking & Counting Demo 
+## Requirement
+__Development Environment: 
 
+* OpenCV
+* sklean
+* pillow
+* numpy 
+* tensorflow-gpu 
 ***
 
-## Environment
+It uses:
 
-I have tested on Ubuntu 16.04/18.04. The code may work on other systems.
+* __Detection__: [YOLOv3](https://github.com/yehengchen/ObjectDetection/tree/master/OneStage/yolo/yolov3) to detect objects on each of the video frames. 
 
-[[Ubuntu-Deep-Learning-Environment-Setup]](https://github.com/yehengchen/Ubuntu-Deep-Learning-Environment-Setup)
+* __Tracking__: [Deep_SORT](https://github.com/nwojke/deep_sort) to track those objects over different frames.
 
-* ##### Ubuntu 16.04 / 18.04 
-* ##### ROS Kinetic / Melodic
-* ##### GTX 1080Ti / RTX 2080Ti
-* ##### python 2.7 / 3.6
+*This repository contains code for Simple Online and Realtime Tracking with a Deep Association Metric (Deep SORT). We extend the original SORT algorithm to integrate appearance information based on a deep appearance descriptor. See the [arXiv preprint](https://arxiv.org/abs/1703.07402) for more information.*
 
+## Quick Start
 
-## Installation
+__0.Requirements__
 
-Clone the repository
+    pip install -r req.txt
+    
+__1. Download the code to your computer.__
+    
+    git clone https://github.com/yehengchen/Object-Detection-and-Tracking.git
+    
+__2. Download [[yolov3.weights]](https://pjreddie.com/media/files/yolov3.weights)__ and place it in `deep_sort_yolov3/model_data/`
+
+*Here you can download my trained [[yolo-spp.h5]](https://pan.baidu.com/s/1DoiifwXrss1QgSQBp2vv8w&shfl=shareset) - `t13k` weights for detecting person/car/bicycle,etc.*
+
+__3. Convert the Darknet YOLO model to a Keras model:__
+```
+$ python convert.py model_data/yolov3.cfg model_data/yolov3.weights model_data/yolo.h5
+``` 
+__4. Run the YOLO_DEEP_SORT:__
 
 ```
-git clone https://github.com/yehengchen/Object-Detection-and-Tracking.git
+$ python main.py -c [CLASS NAME] -i [INPUT VIDEO PATH]
+
+$ python main.py -c person -i people.mp4
 ```
 
-***
-## [OneStage]
-### [YOLO](https://github.com/yehengchen/ObjectDetection/blob/master/OneStage/yolo): Real-Time Object Detection and Tracking
+__5. Can change [deep_sort_yolov3/yolo.py] `__Line 100__` to your tracking object__
 
-* __How to train a YOLO model on custom images: YOLOv3 - [[Here]](https://github.com/yehengchen/ObjectDetection/tree/master/OneStage/yolo/yolov3) / YOLOv4 - [[Here]](https://github.com/yehengchen/Object-Detection-and-Tracking/tree/master/OneStage/yolo/Train-a-YOLOv4-model)__
+*DeepSORT pre-trained weights using people-ReID datasets only for person*
+```
+    if predicted_class != args["class"]:
+               continue
+    
+    if predicted_class != 'person' and predicted_class != 'car':
+               continue
+```
 
-
-
-
-***
-<img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/output_49.gif" width="60%" height="60%">
-
-* #### YOLOv4 + Deep_SORT - Pedestrian Counting & Social Distance - [[Here]](https://github.com/yehengchen/Object-Detection-and-Tracking/tree/master/OneStage/yolo/deep_sort_yolov4)
-* #### YOLOv3 + Deep_SORT - Pedestrian&Car Counting - [[Here]](https://github.com/yehengchen/ObjectDetection/tree/master/OneStage/yolo/deep_sort_yolov3)
-
-***
-<img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/sort_1.gif" width="60%" height="60%">
-
-* #### YOLOv3 + SORT - Pedestrian Counting - [[Here]](https://github.com/yehengchen/ObjectDetection/tree/master/OneStage/yolo/yolov3_sort)
-***
-
-### [Darknet_ROS](https://github.com/yehengchen/YOLOv3-ROS/tree/master/darknet_ros): Real-Time Object Detection and Grasp Detection
-
-<img src="https://github.com/yehengchen/YOLOv3-ROS/blob/master/darknet_ros/yolo_network_config/weights/output.gif" width="60%" height="60%">
-
-* #### YOLOv3 + ROS Kinetic - For small Custom Data - [[Here]](https://github.com/yehengchen/YOLOv3_ROS)
-***
-
-<img src="https://github.com/yehengchen/YOLOv3-ROS/blob/master/yolov3_pytorch_ros/models/output.gif" width="60%" height="100%">
-
-* #### YOLOv3 + ROS Melodic - Robot Grasp Detection - [[Here]](https://github.com/yehengchen/YOLOv3_ROS/tree/master/yolov3_pytorch_ros)
-
-* #### Parts-Arrangement-Robot - [[Here]](https://github.com/yehengchen/Parts-Arrangement-Robot)
-***
-
-<img src="https://github.com/yehengchen/video_demo/blob/master/video_demo/chair_pin.gif" width="60%" height="100%">
-
-* #### YOLOv3 + OpenCV + ROS Melodic - Object Detection (Rotated) - [[Here]](https://github.com/yehengchen/YOLOv3-ROS/tree/master/yolov3_grasp_detection_ros)
-
-***
-### [DeepLabv3+_ROS](https://arxiv.org/abs/1802.02611): Mars Rover - Real-Time Object Tracking
-<img src="https://github.com/HaosUtopia/Mars_Rover/blob/main/deeplabv3plus_ros/imgs/mars_rover_mastcam_rock_tracking.gif" width="60%" height="60%">
-
-* #### DeepLab + OpenCV + ROS Melodic/Gazebo - Object Tracking - [[Here]](https://github.com/HaosUtopia/Mars_Rover/tree/main/deeplabv3plus_ros)
-
-* #### Mars_Rover + ROS Melodic/Gazebo - [[Here]](https://github.com/HaosUtopia/Mars_Rover)
-
-***
-### [SSD](https://github.com/yehengchen/ObjectDetection/tree/master/OneStage/ssd): Single Shot MultiBox Detector
-
-***
-## [TwoStage]
-### [R-CNN](https://github.com/yehengchen/Object-Detection-and-Tracking/tree/master/TwoStage/R-CNN): Region-based methods
-*Fast R-CNN / Faster R-CNN / Mask R-CNN*
-
-__How to train a Mask R-CNN model on own images - [[Here]](https://github.com/yehengchen/Object-Detection-and-Tracking/tree/master/TwoStage/R-CNN)__
-
-<img src="https://github.com/yehengchen/mask_rcnn_ros/blob/master/scripts/mask_rcnn.gif" width="60%" height="60%">
-
-* #### Mask R-CNN + ROS Kinetic - [[Here]](https://github.com/yehengchen/mask_rcnn_ros)
-
-This project is ROS package of Mask R-CNN algorithm for object detection and segmentation.
-
-***
-
-### COCO & VOC Datasets
-* #### COCO dataset and Pascal VOC dataset - [[Here]](https://github.com/yehengchen/ObjectDetection/blob/master/COCO%20and%20Pascal%20VOC.md)
-* #### How to get it working on the COCO dataset __coco2voc__ - [[Here]](https://github.com/yehengchen/ObjectDetection/blob/master/OneStage/yolo/coco2voc.md)
-* #### Convert Dataset2Yolo - COCO / VOC - [[Here]](https://github.com/yehengchen/ObjectDetection/tree/master/OneStage/yolo/convert2Yolo)
-
-***
-
-#### CV & Robotics Paper List (3D object detection & 6D pose estimation) - [[Here]](https://github.com/yehengchen/Computer-Vision-and-Robotics-Paper-List)
-
-#### PapersWithCode: Browse > Computer Vision > Object Detection - [[Here]](https://paperswithcode.com/task/object-detection)
-
-#### ObjectDetection Two-stage vs One-stage Detectors - [[Here]](https://github.com/yehengchen/ObjectDetection/blob/master/Two-stage%20vs%20One-stage%20Detectors.md)
-
-#### ObjectDetection mAP & IoU - [[Here]](https://github.com/yehengchen/ObjectDetection/blob/master/mAP%26IoU.md)
-
-
-
-*** 
+    
+## Reference
+#### Github:deep_sort_yolov3@[yehengchen](https://github.com/yehengchen/Object-Detection-and-Tracking/tree/master/OneStage/yolo/deep_sort_yolov3)
+#### Github:deep_sort@[Nicolai Wojke nwojke](https://github.com/nwojke/deep_sort)
+#### Github:deep_sort_yolov3@[Qidian213 ](https://github.com/Qidian213/deep_sort_yolov3)
 
 
